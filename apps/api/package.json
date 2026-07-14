@@ -1,0 +1,49 @@
+{
+  "name": "@pulseops/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm build && pnpm start",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "dotenv -e ../../.env -- node dist/main.js",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prisma:generate": "dotenv -e ../../.env -- prisma generate",
+    "prisma:migrate": "dotenv -e ../../.env -- prisma migrate dev --name init",
+    "prisma:seed": "dotenv -e ../../.env -- tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@nestjs/common": "11.1.5",
+    "@nestjs/core": "11.1.5",
+    "@nestjs/platform-express": "11.1.5",
+    "@nestjs/platform-socket.io": "11.1.5",
+    "@nestjs/swagger": "11.2.0",
+    "@nestjs/websockets": "11.1.5",
+    "@prisma/client": "6.12.0",
+    "@pulseops/shared": "workspace:*",
+    "bcryptjs": "3.0.2",
+    "bullmq": "5.56.9",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.14.2",
+    "cookie-parser": "1.4.7",
+    "ioredis": "5.6.1",
+    "jsonwebtoken": "9.0.2",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "socket.io": "4.8.1",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "1.4.9",
+    "@types/express": "5.0.3",
+    "@types/jsonwebtoken": "9.0.10",
+    "@types/node": "24.0.15",
+    "@types/supertest": "6.0.3",
+    "dotenv-cli": "10.0.0",
+    "prisma": "6.12.0",
+    "supertest": "7.1.3",
+    "tsx": "4.20.3",
+    "vitest": "3.2.4"
+  }
+}

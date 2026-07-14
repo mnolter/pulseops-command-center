@@ -1,0 +1,27 @@
+{
+  "name": "pulseops",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.13.0",
+  "scripts": {
+    "dev": "pnpm --filter @pulseops/shared build && turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "db:generate": "pnpm --filter @pulseops/api prisma:generate",
+    "db:migrate": "pnpm --filter @pulseops/api prisma:migrate",
+    "db:seed": "pnpm --filter @pulseops/api prisma:seed",
+    "build:sites": "node scripts/build-sites-demo.mjs"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "15.4.6",
+    "@eslint/js": "9.31.0",
+    "@types/node": "24.0.15",
+    "eslint": "9.31.0",
+    "prettier": "3.6.2",
+    "turbo": "2.5.4",
+    "typescript": "5.8.3",
+    "typescript-eslint": "8.38.0"
+  }
+}

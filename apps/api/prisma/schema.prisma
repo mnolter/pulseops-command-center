@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id           String                @id @default(cuid())
+  name         String
+  slug         String                @unique
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  memberships  Membership[]
+  services     Service[]
+  monitors     Monitor[]
+  incidents    Incident[]
+  alertRules   AlertRule[]
+  channels     NotificationChannel[]
+  auditLogs    AuditLog[]
+  notifications NotificationLog[]
+}
+
+model User {
+  id                String          @id @default(cuid())
+  email             String          @unique
+  name              String
+  avatarUrl         String?
+  passwordHash      String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  memberships       Membership[]
+  assignedIncidents Incident[]       @relation("IncidentAssignee")
+  authoredEvents    IncidentEvent[]
+  auditLogs         AuditLog[]
+}
+
+model Membership {
+  id             String       @id @default(cuid())
+  userId         String
+  organizationId String
+  role           String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+}
+
+model Service {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String
+  slug           String
+  description    String?
+  ownerTeam      String
+  status         String       @default("operational")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  monitors       Monitor[]
+  incidents      Incident[]
+
+  @@unique([organizationId, slug])
+  @@index([organizationId, status])
+}
+
+model Monitor {
+  id              String        @id @default(cuid())
+  organizationId  String
+  serviceId       String
+  name            String
+  type            String
+  targetUrl       String
+  method          String        @default("GET")
+  expectedStatus  Int           @default(200)
+  intervalSeconds Int           @default(60)
+  timeoutMs       Int           @default(5000)
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  organization    Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  service         Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  checkResults    CheckResult[]
+
+  @@index([organizationId, serviceId])
+  @@index([isActive])
+}
+
+model CheckResult {
+  id         String   @id @default(cuid())
+  monitorId  String
+  ok         Boolean
+  statusCode Int?
+  latencyMs  Int
+  error      String?
+  createdAt  DateTime @default(now())
+  monitor    Monitor  @relation(fields: [monitorId], references: [id], onDelete: Cascade)
+
+  @@index([monitorId, createdAt])
+}
+
+model Incident {
+  id             String          @id @default(cuid())
+  organizationId String
+  serviceId      String
+  title          String
+  summary        String
+  severity       String
+  status         String          @default("open")
+  assigneeId     String?
+  postmortem     String?
+  openedAt       DateTime        @default(now())
+  resolvedAt     DateTime?
+  updatedAt      DateTime        @updatedAt
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  service        Service         @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  assignee       User?           @relation("IncidentAssignee", fields: [assigneeId], references: [id])
+  events         IncidentEvent[]
+
+  @@index([organizationId, status, severity])
+  @@index([serviceId])
+}
+
+model IncidentEvent {
+  id         String   @id @default(cuid())
+  incidentId String
+  authorId   String?
+  kind       String
+  message    String
+  createdAt  DateTime @default(now())
+  incident   Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  author     User?    @relation(fields: [authorId], references: [id])
+
+  @@index([incidentId, createdAt])
+}
+
+model AlertRule {
+  id               String       @id @default(cuid())
+  organizationId   String
+  name             String
+  severity         String
+  channelType      String
+  thresholdMinutes Int          @default(0)
+  isEnabled        Boolean      @default(true)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, isEnabled])
+}
+
+model NotificationChannel {
+  id             String       @id @default(cuid())
+  organizationId String
+  type           String
+  target         String
+  isEnabled      Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, type])
+}
+
+model NotificationLog {
+  id             String       @id @default(cuid())
+  organizationId String
+  incidentId     String?
+  channelType    String
+  target         String
+  payload        Json
+  status         String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+}
+
+model AuditLog {
+  id             String       @id @default(cuid())
+  organizationId String
+  actorId        String?
+  action         String
+  entityType     String
+  entityId       String?
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  actor          User?        @relation(fields: [actorId], references: [id])
+
+  @@index([organizationId, createdAt])
+}
