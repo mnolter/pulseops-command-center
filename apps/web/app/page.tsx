@@ -590,7 +590,7 @@ export default function PulseOpsPage() {
 
     try {
       if (!shouldUseLiveApi()) {
-        throw new Error("Public demo mode uses embedded recruiter data.");
+        throw new Error("Fallback demo mode uses embedded recruiter data.");
       }
 
       if (loginFirst) {

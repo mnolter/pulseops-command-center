@@ -11,8 +11,7 @@
     "typecheck": "turbo typecheck",
     "db:generate": "pnpm --filter @pulseops/api prisma:generate",
     "db:migrate": "pnpm --filter @pulseops/api prisma:migrate",
-    "db:seed": "pnpm --filter @pulseops/api prisma:seed",
-    "build:sites": "node scripts/build-sites-demo.mjs"
+    "db:seed": "pnpm --filter @pulseops/api prisma:seed"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "15.4.6",

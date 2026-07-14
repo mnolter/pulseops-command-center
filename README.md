@@ -7,7 +7,7 @@ It is designed to show both sides of full-stack work:
 - a polished operational UI that feels like a real product, not a tutorial dashboard;
 - a real backend architecture with authentication, tenant isolation, monitors, workers, WebSockets, audit logs and incident workflows.
 
-> Public demo: [pulseops-command-center.mnolter.chatgpt.site](https://pulseops-command-center.mnolter.chatgpt.site). The full backend runs locally with PostgreSQL and Redis.
+> The public hosted demo is intentionally disabled. The portfolio review path is the repository, screenshots, architecture notes and the local full-stack demo with PostgreSQL and Redis.
 
 ## Screenshots
 
@@ -133,7 +133,7 @@ Realtime channels:
 - **Prisma + PostgreSQL:** relational model fits tenant ownership, incident history and auditability.
 - **Redis + BullMQ:** monitor checks are background work, not request/response work.
 - **Socket.IO:** dashboard changes should feel live without refresh loops.
-- **Public demo fallback:** recruiters can open the public deployment instantly; the local app can connect to the real backend.
+- **Demo fallback:** the UI can render realistic recruiter data without the API, while the local full-stack app connects to the real backend.
 
 ## Local Development
 
@@ -182,7 +182,7 @@ Useful interview angles:
 - how tenant isolation is enforced through authenticated organization context;
 - why monitor execution lives in workers instead of controllers;
 - how incident deduplication avoids alert storms;
-- why the public deployment is demo-mode while the repository keeps a real backend;
+- why the UI keeps a fallback demo mode while the repository includes a real backend;
 - how the UI balances density, visual polish and operational clarity.
 
 ## Roadmap
