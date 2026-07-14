@@ -7,7 +7,7 @@ It is designed to show both sides of full-stack work:
 - a polished operational UI that feels like a real product, not a tutorial dashboard;
 - a real backend architecture with authentication, tenant isolation, monitors, workers, WebSockets, audit logs and incident workflows.
 
-> Public demo: deployed as a curated recruiter walkthrough. The full backend runs locally with PostgreSQL and Redis.
+> Public demo: [pulseops-command-center.mnolter.chatgpt.site](https://pulseops-command-center.mnolter.chatgpt.site). The full backend runs locally with PostgreSQL and Redis.
 
 ## Screenshots
 
