@@ -7,7 +7,7 @@ It is designed to show both sides of full-stack work:
 - a polished operational UI that feels like a real product, not a tutorial dashboard;
 - a real backend architecture with authentication, tenant isolation, monitors, workers, WebSockets, audit logs and incident workflows.
 
-> The public hosted demo is intentionally disabled. The portfolio review path is the repository, screenshots, architecture notes and the local full-stack demo with PostgreSQL and Redis.
+> The hosted demo is intentionally disabled. The public recruiter artifact is this repository: screenshots, architecture notes and the local full-stack demo with PostgreSQL and Redis.
 
 ## Screenshots
 
